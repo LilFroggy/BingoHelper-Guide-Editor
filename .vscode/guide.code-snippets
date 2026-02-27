@@ -1,5 +1,5 @@
 {
-  "New Step": {
+  "new step": {
     "scope": "json",
     "prefix": "step",
     "body": [
@@ -10,7 +10,7 @@
     ],
     "description": "Create a new step object"
   },
-  "New Guide": {
+  "new guide": {
     "scope": "json",
     "prefix": "guide",
     "body": [
@@ -25,6 +25,20 @@
       "\t}",
       "}"
     ],
-    "description": "Create a new guide structure"
+    "description": "Create a new guide object"
+  },
+  "new waypoint": {
+    "prefix": "waypoint",
+    "body": [
+      "\"waypoint\": {",
+      "\t\"type\": \"list\",",
+      "\t\"beam\": true,",
+      "\t\"list\": [",
+      "\t\t",
+      "\t],",
+      "\t\"index\": 0",
+      "}"
+    ],
+    "description": "Creates a new waypoint property"
   }
 }
