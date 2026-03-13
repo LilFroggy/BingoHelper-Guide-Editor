@@ -4,7 +4,7 @@
         {
             "label": "Auto Setup",
             "type": "shell",
-            // Mac/Linux
+            // Mac & Linux
             "command": "npm install && npm run updateEnums",
             "windows": {
                 // Windows

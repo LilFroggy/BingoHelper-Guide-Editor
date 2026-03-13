@@ -6,7 +6,7 @@ const YELLOW = "\u001b[33m"
 const GREEN = "\x1b[32m";
 const RESET = "\x1b[0m";
 
-export const GUIDE_CREATION_SCHEMA_PATH = "./schemas/guide-creation-schema.json";
+export const GUIDE_SCHEMA_PATH = "./schemas/guide.schema.json";
 
 export const getDataFromURL = async (url) => {
     const response = await fetch(url);
@@ -15,9 +15,9 @@ export const getDataFromURL = async (url) => {
     return data;
 }
 
-export const getSchema = () => JSON.parse(readFileSync(GUIDE_CREATION_SCHEMA_PATH, "utf8"));
+export const getSchema = () => JSON.parse(readFileSync(GUIDE_SCHEMA_PATH, "utf8"));
 
-export const setSchema = (schema) => writeFileSync(GUIDE_CREATION_SCHEMA_PATH, JSON.stringify(schema, null, "\t"));
+export const setSchema = (schema) => writeFileSync(GUIDE_SCHEMA_PATH, JSON.stringify(schema, null, "\t"));
 
 /**
  * 

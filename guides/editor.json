@@ -315,6 +315,19 @@
                 "command": "/trades"
             },
             {
+                "type": "collection",
+                "instruction": "Unlock Wheat Collection 4",
+                "collection": "wheat",
+                "level": 4
+            },
+            {
+                "type": "guiClickSlot",
+                "instruction": "Craft Farming Talisman",
+                "guiName": "Farming Talisman Recipe",
+                "slotIndex": 32,
+                "command": "/viewrecipe FARMING_TALISMAN"
+            },
+            {
                 "type": "guiClickSlot",
                 "instruction": "Craft Farm Suit Helmet",
                 "guiName": "Farm Suit Helmet Recipe",
@@ -341,19 +354,6 @@
                 "guiName": "Farm Suit Boots Recipe",
                 "slotIndex": 32,
                 "command": "/viewrecipe FARM_SUIT_BOOTS"
-            },
-            {
-                "type": "collection",
-                "instruction": "Unlock Wheat Collection 4",
-                "collection": "wheat",
-                "level": 4
-            },
-            {
-                "type": "guiClickSlot",
-                "instruction": "Craft Farming Talisman",
-                "guiName": "Farming Talisman Recipe",
-                "slotIndex": 32,
-                "command": "/viewrecipe FARMING_TALISMAN"
             },
             {
                 "type": "skill",
@@ -581,6 +581,11 @@
             },
             {
                 "type": "message",
+                "instruction": "Drop and pick up Coal",
+                "criteria": "OBJECTIVE COMPLETE"
+            },
+            {
+                "type": "message",
                 "instruction": "/warp stonks",
                 "criteria": "Warping...",
                 "command": "/warp stonks"
@@ -690,11 +695,6 @@
                         -57.5
                     ]
                 }
-            },
-            {
-                "type": "message",
-                "instruction": "Drop and pick up Coal",
-                "criteria": "OBJECTIVE COMPLETE"
             },
             {
                 "type": "message",
@@ -987,6 +987,8 @@
                 "type": "store",
                 "instruction": "Store items",
                 "items": [
+                    "CHEST",
+                    "REDSTONE",
                     "LOG",
                     "STICK",
                     "WOOD_SWORD",
@@ -1630,7 +1632,7 @@
             },
             {
                 "type": "has",
-                "instruction": "Get Raw Porkchop &b%2%&r\nGet Leather &b%2%&r\nGet Egg &b%3%&r",
+                "instruction": "Get Raw Porkchop &b%1%&r\nGet Leather &b%2%&r\nGet Egg &b%3%&r",
                 "items": {
                     "PORK": {
                         "count": 0,
@@ -2029,7 +2031,7 @@
                 "command": "/viewrecipe MUSHROOM_BOOTS"
             },
             {
-                "type": "sell",
+                "type": "store",
                 "instruction": "Store Mushroom Armor",
                 "items": [
                     "MUSHROOM_HELMET",
@@ -2258,6 +2260,21 @@
                 }
             },
             {
+                "type": "store",
+                "instruction": "Equip Angler Armor",
+                "items": [
+                    "ANGLER_HELMET",
+                    "ANGLER_CHESTPLATE",
+                    "ANGLER_LEGGINGS",
+                    "ANGLER_BOOTS",
+                    "ANGLER_NECKLACE",
+                    "ANGLER_CLOAK",
+                    "ANGLER_BELT",
+                    "ANGLER_BRACELET"
+                ],
+                "command": "/equipment"
+            },
+            {
                 "type": "collection",
                 "instruction": "Unlock Coal Collection 3",
                 "collection": "coal",
@@ -2295,12 +2312,12 @@
                 "command": "/warp stonks"
             },
             {
-                "type": "has",
-                "instruction": "Get Oak Log &b%1%&r",
+                "type": "buy",
+                "instruction": "Buy Oak Log &b%1%&r",
                 "items": {
                     "LOG": {
                         "count": 0,
-                        "target": 475,
+                        "target": 630,
                         "done": false
                     }
                 },
@@ -2316,6 +2333,15 @@
                                 -70.0
                             ],
                             "radius": 12
+                        },
+                        {
+                            "text": "",
+                            "position": [
+                                -54.0,
+                                69.0,
+                                -70.0
+                            ],
+                            "radius": 11
                         },
                         {
                             "text": "",
@@ -2347,83 +2373,44 @@
                         {
                             "text": "",
                             "position": [
-                                -174.0,
+                                -115.0,
                                 74.0,
-                                -24.0
+                                -34.0
                             ],
-                            "radius": 30
+                            "radius": 12
                         },
                         {
-                            "text": "Wood",
+                            "text": "Lumber Merchant",
                             "position": [
-                                -174.0,
-                                74.0,
-                                -24.0
+                                -125.0,
+                                73.0,
+                                -42.5
                             ],
-                            "radius": 200
+                            "radius": 0
                         }
                     ],
                     "index": 0
+                },
+                "outlineEntity": {
+                    "entityType": "Player",
+                    "position": [
+                        -125.0,
+                        73.0,
+                        -42.5
+                    ]
                 }
             },
             {
-                "type": "buy",
-                "instruction": "Get Coal from Trades &b%1%&r",
+                "type": "has",
+                "instruction": "Get Enchanted Coal &b%1%&r\n&7(Chop Logs, Trade for Coal)",
                 "items": {
-                    "COAL": {
+                    "ENCHANTED_COAL": {
                         "count": 0,
-                        "target": 950,
+                        "target": 15,
                         "done": false
                     }
                 },
                 "command": "/trades"
-            },
-            {
-                "type": "has",
-                "instruction": "Craft Enchanted Coal &b%1%&r",
-                "items": {
-                    "ENCHANTED_COAL": {
-                        "count": 0,
-                        "target": 7,
-                        "done": false
-                    }
-                },
-                "command": "/viewrecipe ENCHANTED_COAL"
-            },
-            {
-                "type": "has",
-                "instruction": "Get Oak Log &b%1%&r",
-                "items": {
-                    "LOG": {
-                        "count": 0,
-                        "target": 600,
-                        "done": false
-                    }
-                }
-            },
-            {
-                "type": "buy",
-                "instruction": "Get Coal from Trades &b%1%&r",
-                "items": {
-                    "COAL": {
-                        "count": 0,
-                        "target": 1200,
-                        "done": false
-                    }
-                },
-                "command": "/trades"
-            },
-            {
-                "type": "has",
-                "instruction": "Craft Enchanted Coal &b%1%&r",
-                "items": {
-                    "ENCHANTED_COAL": {
-                        "count": 0,
-                        "target": 8,
-                        "done": false
-                    }
-                },
-                "command": "/viewrecipe ENCHANTED_COAL"
             },
             {
                 "type": "has",
@@ -2465,7 +2452,7 @@
                 "command": "/viewrecipe LEAFLET_BOOTS"
             },
             {
-                "type": "sell",
+                "type": "store",
                 "instruction": "Store Leaflet Armor",
                 "items": [
                     "LEAFLET_HELMET",
@@ -2474,6 +2461,24 @@
                     "LEAFLET_BOOTS"
                 ],
                 "command": "/ec 1"
+            },
+            {
+                "type": "sell",
+                "instruction": "Sell items",
+                "items": [
+                    "LEAVES",
+                    "LEAVES:1",
+                    "LEAVES:2",
+                    "LEAVES:3",
+                    "LEAVES_2",
+                    "LEAVES_2:1",
+                    "LOG",
+                    "COAL",
+                    "COAL_BLOCK",
+                    "COBBLESTONE",
+                    "STONE"
+                ],
+                "command": "/trades"
             },
             {
                 "type": "area",
@@ -2631,7 +2636,7 @@
                             "radius": 6
                         },
                         {
-                            "text": "",
+                            "text": "Miner Skeletons",
                             "position": [
                                 -41,
                                 41,
@@ -2640,7 +2645,7 @@
                             "radius": 7
                         },
                         {
-                            "text": "",
+                            "text": "Miner Skeletons",
                             "position": [
                                 10,
                                 36,
@@ -2649,7 +2654,7 @@
                             "radius": 5
                         },
                         {
-                            "text": "",
+                            "text": "Miner Skeletons",
                             "position": [
                                 -39,
                                 15,
@@ -3175,7 +3180,7 @@
                 "command": "/craft"
             },
             {
-                "type": "sell",
+                "type": "store",
                 "instruction": "Store Armor Sets",
                 "items": [
                     "MINER_OUTFIT_HELMET",
@@ -3995,7 +4000,7 @@
                 }
             },
             {
-                "type": "sell",
+                "type": "store",
                 "instruction": "Store Armor Sets",
                 "items": [
                     "CHAINMAIL_HELMET",
@@ -4070,28 +4075,6 @@
                 }
             },
             {
-                "type": "store",
-                "instruction": "Equip Ender Armor",
-                "items": [
-                    "END_HELMET",
-                    "END_CHESTPLATE",
-                    "END_LEGGINGS",
-                    "END_BOOTS"
-                ],
-                "command": "/equipment"
-            },
-            {
-                "type": "store",
-                "instruction": "Store Angler Armor",
-                "items": [
-                    "ANGLER_HELMET",
-                    "ANGLER_CHESTPLATE",
-                    "ANGLER_LEGGINGS",
-                    "ANGLER_BOOTS"
-                ],
-                "command": "/wardrobe"
-            },
-            {
                 "type": "area",
                 "instruction": "/warp end",
                 "area": "The End",
@@ -4125,7 +4108,7 @@
             },
             {
                 "type": "skill",
-                "instruction": "Unlock Combat 15",
+                "instruction": "Unlock Combat 15\n&7(Mine nodes & kill Nest Mites too)",
                 "skill": "combat",
                 "level": 15
             },
@@ -4157,6 +4140,58 @@
                 "instruction": "/warp stonks",
                 "area": "Hub",
                 "command": "/warp stonks"
+            },
+            {
+                "type": "enchant",
+                "instruction": "Enchant items",
+                "items": {
+                    "END_HELMET": {
+                        "enchants": [
+                            "Protection V",
+                            "Growth V"
+                        ],
+                        "done": false
+                    },
+                    "END_CHESTPLATE": {
+                        "enchants": [
+                            "Protection V",
+                            "Growth V"
+                        ],
+                        "done": false
+                    },
+                    "END_LEGGINGS": {
+                        "enchants": [
+                            "Protection V",
+                            "Growth V"
+                        ],
+                        "done": false
+                    },
+                    "END_BOOTS": {
+                        "enchants": [
+                            "Protection V",
+                            "Growth V",
+                            "Depth Strider III",
+                            "Feather Falling V"
+                        ],
+                        "done": false
+                    }
+                },
+                "waypoint": {
+                    "type": "list",
+                    "beam": true,
+                    "list": [
+                        {
+                            "text": "",
+                            "position": [
+                                -67.0,
+                                70.0,
+                                -81.0
+                            ],
+                            "radius": 0
+                        }
+                    ],
+                    "index": 0
+                }
             },
             {
                 "type": "buy",
@@ -4466,58 +4501,6 @@
                     "LEAFLET_BOOTS"
                 ],
                 "command": "/wardrobe"
-            },
-            {
-                "type": "enchant",
-                "instruction": "Enchant items",
-                "items": {
-                    "END_HELMET": {
-                        "enchants": [
-                            "Protection V",
-                            "Growth V"
-                        ],
-                        "done": false
-                    },
-                    "END_CHESTPLATE": {
-                        "enchants": [
-                            "Protection V",
-                            "Growth V"
-                        ],
-                        "done": false
-                    },
-                    "END_LEGGINGS": {
-                        "enchants": [
-                            "Protection V",
-                            "Growth V"
-                        ],
-                        "done": false
-                    },
-                    "END_BOOTS": {
-                        "enchants": [
-                            "Protection V",
-                            "Growth V",
-                            "Depth Strider III",
-                            "Feather Falling V"
-                        ],
-                        "done": false
-                    }
-                },
-                "waypoint": {
-                    "type": "list",
-                    "beam": true,
-                    "list": [
-                        {
-                            "text": "",
-                            "position": [
-                                -67.0,
-                                70.0,
-                                -81.0
-                            ],
-                            "radius": 0
-                        }
-                    ],
-                    "index": 0
-                }
             }
         ]
     }

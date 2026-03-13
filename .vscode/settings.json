@@ -3,7 +3,7 @@
     "json.schemas": [
         {
             "fileMatch": ["/guides/**"],
-            "url": "./schemas/guide-creation-schema.json"
+            "url": "./schemas/guide.schema.json"
         }
     ]
 }
