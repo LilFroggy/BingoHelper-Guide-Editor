@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { RED, RESET, shouldExecuteTask, YELLOW } from './util';
+import { shouldExecuteTask, GREEN, RED, RESET, YELLOW } from './util.js';
 
 const REPO_URL = "https://github.com/LilFroggy/BingoHelper-Guide-Editor.git";
 
@@ -15,9 +15,9 @@ export const updateEditor = () => {
     console.log(`${YELLOW}Syncing BingoHelper Guide Editor...${RESET}`);
 
     try {
-        execSync(`git remote set-url origin ${REPO_URL}`);
+        ensureRemote('upstream', REPO_URL);
 
-        execSync('git fetch origin main');
+        execSync('git fetch upstream main');
 
         execSync('git reset --hard origin/main');
 
@@ -25,7 +25,7 @@ export const updateEditor = () => {
 
     } catch (error) {
         console.error(`${RED}Update failed.${RESET}`, error);
-        
+
         // Check if the error is because it's not a git repo (e.g. they downloaded a ZIP)
         if (error.message.includes('not a git repository')) {
             console.log("Suggestion: It looks like this folder wasn't cloned with Git.");
@@ -34,6 +34,20 @@ export const updateEditor = () => {
         } else {
             console.log("Details:", error.message);
         }
+    }
+}
+
+function ensureRemote(name, url) {
+    try {
+        const remotes = execSync('git remote').toString();
+
+        if (remotes.includes(name)) {
+            execSync(`git remote set-url ${name} ${url}`, { stdio: 'inherit' });
+        } else {
+            execSync(`git remote add ${name} ${url}`, { stdio: 'inherit' });
+        }
+    } catch (e) {
+        console.error(`Failed to configure remote '${name}':`, e);
     }
 }
 
