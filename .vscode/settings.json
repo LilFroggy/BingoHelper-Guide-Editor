@@ -1,8 +1,22 @@
 {
+    "editor.formatOnPaste": true,
     "json.schemas": [
         {
             "fileMatch": ["drafts/**.json"],
             "url": "./schemas/guide.schema.json"
         }
-    ]
+    ],
+    "files.readonlyInclude": {
+        "references/**.json": true
+    }/*,
+    "files.exclude": {
+        ".git": true,
+        "node_modules": true,
+        "schemas": true,
+        "services": true,
+        "tasks": true,
+        ".gitignore": true,
+        "package-lock.json": true,
+        "package.json": true
+    }*/
 }

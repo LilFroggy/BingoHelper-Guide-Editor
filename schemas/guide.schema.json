@@ -30,14 +30,24 @@
 							"command": {
 								"type": "string"
 							},
-							"clientCommand": {
-								"type": "string"
-							},
 							"waypoint": {
 								"$ref": "#/definitions/WaypointProperty"
 							},
-							"outlineEntity": {
-								"$ref": "#/definitions/OutlineEntityProperty"
+							"outlineEntities": {
+								"$ref": "#/definitions/OutlineEntitiesProperty"
+							},
+							"highlightSlots": {
+								"$ref": "#/definitions/HighlightSlotsProperty"
+							},
+							"bingoRanks": {
+								"type": "array",
+								"items": {
+									"type": "integer"
+								},
+								"minItems": 1
+							},
+							"async": {
+								"$ref": "#/definitions/AsyncProperty"
 							}
 						},
 						"oneOf": [
@@ -72,7 +82,7 @@
 								"$ref": "#/definitions/GuiItemStep"
 							},
 							{
-								"$ref": "#/definitions/GuiClickSlotStep"
+								"$ref": "#/definitions/ClickSlotStep"
 							},
 							{
 								"$ref": "#/definitions/SkillStep"
@@ -91,20 +101,25 @@
 							},
 							{
 								"$ref": "#/definitions/UpgradeMinionStep"
+							},
+							{
+								"$ref": "#/definitions/MobTypesStep"
 							}
 						],
 						"required": [
 							"type",
 							"instruction"
 						]
-					}
+					},
+					"additionalProperties": false
 				}
 			},
 			"required": [
 				"stepIndex",
 				"steps"
 			]
-		}
+		},
+		"additionalProperties": false
 	},
 	"required": [
 		"name",
@@ -113,6 +128,7 @@
 	],
 	"definitions": {
 		"WaypointProperty": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "list"
@@ -140,6 +156,7 @@
 								"type": "integer"
 							}
 						},
+						"additionalProperties": false,
 						"required": [
 							"text",
 							"position",
@@ -151,6 +168,7 @@
 					"type": "integer"
 				}
 			},
+			"additionalProperties": false,
 			"required": [
 				"type",
 				"beam",
@@ -158,9 +176,43 @@
 				"index"
 			]
 		},
-		"OutlineEntityProperty": {
+		"OutlineEntitiesProperty": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/EntityPredicate"
+			},
+			"minItems": 1
+		},
+		"HighlightSlotsProperty": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/SlotPredicate"
+			},
+			"minItems": 1
+		},
+		"AsyncProperty": {
+			"type": "object",
 			"properties": {
-				"entityType": {
+				"effectiveIndex": {
+					"type": "integer"
+				},
+				"requirements": {
+					"type": "object",
+					"properties": {
+						"entity": {
+							"$ref": "#/definitions/EntityPredicate"
+						}
+					},
+					"additionalProperties": false,
+					"minProperties": 1
+				}
+			},
+			"additionalProperties": false
+		},
+		"EntityPredicate": {
+			"type": "object",
+			"properties": {
+				"type": {
 					"type": "string"
 				},
 				"position": {
@@ -170,12 +222,51 @@
 					},
 					"minItems": 3,
 					"maxItems": 3
+				},
+				"skin": {
+					"type": "string"
 				}
 			},
-			"required": [
-				"entityType",
-				"position"
-			]
+			"additionalProperties": false,
+			"minProperties": 1
+		},
+		"SlotPredicate": {
+			"type": "object",
+			"properties": {
+				"guiName": {
+					"type": "string"
+				},
+				"slotIndex": {
+					"type": "integer"
+				},
+				"skyblockId": {
+					"$ref": "#/definitions/ItemIds"
+				},
+				"has": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
+				},
+				"doesntHave": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
+				},
+				"playerInv": {
+					"type": "boolean"
+				},
+				"highlightColor": {
+					"type": "string",
+					"format": "color",
+					"pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$"
+				}
+			},
+			"additionalProperties": false,
+			"minProperties": 1
 		},
 		"StepTypes": {
 			"enum": [
@@ -189,16 +280,18 @@
 				"enchant",
 				"reforge",
 				"guiItem",
-				"guiClickSlot",
+				"clickSlot",
 				"skill",
 				"collection",
 				"store",
 				"retrieve",
 				"experience",
-				"upgradeMinion"
+				"upgradeMinion",
+				"mobTypes"
 			]
 		},
 		"MessageStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "message"
@@ -212,6 +305,7 @@
 			]
 		},
 		"CakeStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "cake"
@@ -228,6 +322,7 @@
 			]
 		},
 		"SellStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "sell"
@@ -244,6 +339,7 @@
 			]
 		},
 		"BuyStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "buy"
@@ -279,6 +375,7 @@
 			]
 		},
 		"HasStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "has"
@@ -314,6 +411,7 @@
 			]
 		},
 		"AreaStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "area"
@@ -327,6 +425,7 @@
 			]
 		},
 		"SubAreaStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "subArea"
@@ -340,6 +439,7 @@
 			]
 		},
 		"EnchantStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "enchant"
@@ -362,6 +462,7 @@
 								"type": "boolean"
 							}
 						},
+						"additionalProperties": false,
 						"required": [
 							"enchants",
 							"done"
@@ -374,6 +475,7 @@
 			]
 		},
 		"ReforgeStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "reforge"
@@ -396,6 +498,7 @@
 								"type": "boolean"
 							}
 						},
+						"additionalProperties": false,
 						"required": [
 							"reforges",
 							"done"
@@ -415,38 +518,67 @@
 				"guiName": {
 					"type": "string"
 				},
-				"itemIndex": {
+				"slotIndex": {
 					"type": "integer"
 				},
+				"skyblockId": {
+					"$ref": "#/definitions/ItemIds"
+				},
 				"has": {
-					"type": "string"
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
 				},
 				"doesntHave": {
-					"type": "string"
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
+				},
+				"playerInv": {
+					"type": "boolean"
 				}
-			},
-			"required": [
-				"guiName"
-			]
+			}
 		},
-		"GuiClickSlotStep": {
+		"ClickSlotStep": {
+			"type": "object",
 			"properties": {
 				"type": {
-					"const": "guiClickSlot"
+					"const": "clickSlot"
 				},
 				"guiName": {
 					"type": "string"
 				},
 				"slotIndex": {
 					"type": "integer"
+				},
+				"skyblockId": {
+					"$ref": "#/definitions/ItemIds"
+				},
+				"has": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
+				},
+				"doesntHave": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
+				},
+				"playerInv": {
+					"type": "boolean"
 				}
-			},
-			"required": [
-				"guiName",
-				"slotIndex"
-			]
+			}
 		},
 		"SkillStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "skill"
@@ -464,6 +596,7 @@
 			]
 		},
 		"CollectionStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "collection"
@@ -481,6 +614,7 @@
 			]
 		},
 		"StoreStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "store"
@@ -497,6 +631,7 @@
 			]
 		},
 		"RetrieveStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "retrieve"
@@ -513,6 +648,7 @@
 			]
 		},
 		"ExperienceStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "experience"
@@ -526,6 +662,7 @@
 			]
 		},
 		"UpgradeMinionStep": {
+			"type": "object",
 			"properties": {
 				"type": {
 					"const": "upgradeMinion"
@@ -544,6 +681,51 @@
 				"minionId",
 				"fromLevel",
 				"toLevel"
+			]
+		},
+		"MobTypesStep": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"const": "mobTypes"
+				},
+				"mobTypes": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/MobTypes"
+					}
+				}
+			},
+			"required": [
+				"mobTypes"
+			]
+		},
+		"MobTypes": {
+			"type": "string",
+			"enum": [
+				"airborne",
+				"animal",
+				"aquatic",
+				"arcane",
+				"arthropod",
+				"construct",
+				"cubic",
+				"elusive",
+				"ender",
+				"frozen",
+				"glacial",
+				"humanoid",
+				"infernal",
+				"magmatic",
+				"mythological",
+				"pest",
+				"shielded",
+				"skeletal",
+				"spooky",
+				"subterranean",
+				"undead",
+				"wither",
+				"woodland"
 			]
 		},
 		"MinionIds": {
@@ -587,6 +769,7 @@
 				"CACTUS",
 				"SLIME",
 				"DARK_OAK",
+				"LILY_PAD",
 				"ZOMBIE",
 				"EMERALD",
 				"MUSHROOM",
@@ -725,7 +908,11 @@
 				"LARGE_ENCHANTED_MINING_SACK",
 				"MEDIUM_COMBAT_SACK",
 				"GARDEN_SACK",
+				"SILVER_TROPHY_FROG_SACK",
+				"DIAMOND_TROPHY_FISHING_SACK",
+				"GOLD_TROPHY_FISHING_SACK",
 				"SILVER_TROPHY_FISHING_SACK",
+				"BRONZE_TROPHY_FROG_SACK",
 				"BRONZE_TROPHY_FISHING_SACK",
 				"LARGE_ENCHANTED_HUSBANDRY_SACK",
 				"LARGE_ENCHANTED_FISHING_SACK",
@@ -1201,6 +1388,18 @@
 				"DARK_OAK_GENERATOR_3",
 				"DARK_OAK_GENERATOR_5",
 				"DARK_OAK_GENERATOR_6",
+				"LILY_PAD_GENERATOR_2",
+				"LILY_PAD_GENERATOR_12",
+				"LILY_PAD_GENERATOR_11",
+				"LILY_PAD_GENERATOR_9",
+				"LILY_PAD_GENERATOR_5",
+				"LILY_PAD_GENERATOR_4",
+				"LILY_PAD_GENERATOR_8",
+				"LILY_PAD_GENERATOR_10",
+				"LILY_PAD_GENERATOR_3",
+				"LILY_PAD_GENERATOR_1",
+				"LILY_PAD_GENERATOR_7",
+				"LILY_PAD_GENERATOR_6",
 				"ZOMBIE_GENERATOR_6",
 				"ZOMBIE_GENERATOR_8",
 				"ZOMBIE_GENERATOR_7",
@@ -1559,16 +1758,28 @@
 				"CHUM_SINKER",
 				"STINGY_SINKER",
 				"SPONGE_SINKER",
+				"LOTUS_SINKER",
 				"COMMON_HOOK",
 				"TREASURE_HOOK",
+				"PUDDLE_JUMPER_HOOK",
 				"PHANTOM_HOOK",
 				"HOTSPOT_HOOK",
 				"SHREDDED_LINE",
+				"TROPHY_LINE",
 				"TITAN_LINE",
 				"SPEEDY_LINE",
 				"SCUTTLER_SHELL",
+				"SNAKE_EYES",
 				"BURNT_TEXTS",
 				"EDIBLE_SEAWEED",
+				"LOTUS_CROWN",
+				"UNLUCKY_DOUBLOON",
+				"LOTUS_ATOLL_TRAVEL_SCROLL",
+				"BARREL_OF_RICHES",
+				"REVERSE_REFORGE_STONE_CORE",
+				"GEOMETRIC_ODDITY",
+				"PRINCE_CROWN_JEWEL",
+				"LOTUS_WATER_ORB",
 				"HOTSPOT_BAIT",
 				"HOT_BAIT",
 				"FROZEN_BAIT",
@@ -1586,7 +1797,15 @@
 				"SPIKED_BAIT",
 				"FISH_AFFINITY_TALISMAN",
 				"FROZEN_CHICKEN",
+				"STUDENT_STUDIES",
+				"PHD_GRIMOIRE",
+				"APPLICANT_STATEMENT",
+				"MASTER_THESIS",
 				"FRIED_FROZEN_CHICKEN",
+				"FROGGLES_DIAMOND",
+				"FROGGLES_SILVER",
+				"FROGGLES_GOLD",
+				"FROGGLES",
 				"RUSTY_SHIP_ENGINE",
 				"BRONZE_SHIP_ENGINE",
 				"BRONZE_SHIP_HELM",
@@ -1633,6 +1852,7 @@
 				"TROUBLED_BUBBLE",
 				"SINGED_POWDER",
 				"SEVERED_PINCER",
+				"FROGCOIN",
 				"BRONZE_BOWL",
 				"OCTOPUS_TENDRIL",
 				"BROKEN_RADAR",
@@ -1640,17 +1860,22 @@
 				"HALF_EATEN_MUSHROOM",
 				"TITANOBOA_SHED",
 				"SCORCHED_CRAB_STICK",
+				"RIBBIT_THE_FISH",
 				"CAN_OF_WORMS",
+				"HOTSPOT_TONIC_MIXIN",
 				"BRIMSTONE_HANDLE",
 				"OVERFLOWING_TRASH_CAN",
 				"FRIED_FEATHER",
 				"HOTSPOT_RADAR",
+				"RED_SWEATER",
 				"TORN_CLOTH",
 				"GOLD_BOTTLE_CAP",
 				"CHAIN_END_TIMES",
 				"ALLIGATOR_SKIN",
 				"CALCIFIED_HEART",
 				"UMBERELLA",
+				"INK_SPLAT",
+				"SEARED_ESCARGOT",
 				"BLUE_RING",
 				"FLAMING_FLAY",
 				"ABIPHONE_X_PLUS",
@@ -1872,7 +2097,14 @@
 				"WHITE_LARGE_BACKPACK",
 				"BLACK_GREATER_BACKPACK",
 				"BLUE_GREATER_BACKPACK",
+				"GENERATOR_UPGRADE_STONE_LILY_PAD_12",
+				"CONDENSED_WATER_LILY",
+				"BUCKET_OF_FROGSPAWN",
 				"CLOWNFISH_CLOAK",
+				"LOTUS_SILVER",
+				"LOTUS_GOLD",
+				"LOTUS_DIAMOND",
+				"LOTUS",
 				"CLAY_BRACELET",
 				"GREAT_SPOOK_NECKLACE",
 				"GREAT_SPOOK_LEGGINGS",
@@ -1951,9 +2183,66 @@
 				"MINERAL_CHESTPLATE",
 				"MINERAL_LEGGINGS",
 				"DIVAN_POWDER_COATING",
+				"BREAD_BOWL",
+				"CRYSTALIZED_MOONLIGHT",
+				"FRESHLY_BAKED_HEIRLOOM",
+				"VERY_MOLDY_BREAD",
+				"POTTED_CACTUS",
+				"GRATITUDE_ARTIFACT",
+				"SUNFLOWER_BUTTER",
+				"NOT_VERY_MOLDY_BREAD",
+				"TEDS_CONTACT_BAKED_IN_BREAD",
+				"JACOBS_PARTICIPATION_MEDAL",
+				"CELESTIAL_MASON_JAR",
+				"CARROT_ZEST",
+				"OVERPRICED_DRINK",
+				"HASHBROWN",
+				"INFESTED_DJ_SET",
+				"SALTED_SUNFLOWER_SEEDS",
+				"CORNUCOPIA",
+				"FINNS_FOCACCIA",
+				"TRUNK_POLISH",
+				"LOCUST_LARVA",
+				"PRICKLY_CREEPER",
+				"FEAST_FLASK",
+				"CANE_KNOT",
+				"MELON_JUICE",
+				"MINIATURE_GREENHOUSE_SKIN",
+				"THERMODYNAMIC_CHESTPLATE",
+				"AGGOURDIAN",
+				"FRESHLY_BAKED_ARTIFACT",
+				"CACTUS_FLOWER",
+				"FUNGAL_TIP_JAR",
+				"POIGNANT_LUCKY_CLOVER",
+				"THERMODYNAMIC_BOOTS",
 				"FINE_FLOUR",
 				"BROWN_BANDANA",
+				"FRESHLY_BAKED_RELIC",
+				"GRATITUDE_TALISMAN",
+				"DESIGNER_COFFEE_BEANS",
+				"MOONDEW",
+				"TURBO_GOURD",
+				"FEASTFUNGUS",
+				"BOTROOT",
+				"VISITORS_GRATITUDE",
+				"THERMODYNAMIC_LEGGINGS",
+				"FRESHLY_BAKED_RING",
 				"PEST_VEST",
+				"GRATITUDE_RING",
+				"UNALLOYED_SPEED",
+				"CARROT_COLORED_VINYL_SET",
+				"COMMEMORATIVE_MASON_JAR",
+				"FLORAL_GELATIN",
+				"FRESHLY_BAKED_TALISMAN",
+				"ROYAL_JELLY",
+				"THERMODYNAMIC_HELMET",
+				"DEEPFRIES",
+				"COCOA_NET",
+				"POIGNANT_CARROT_BAIT",
+				"ENCHANTED_TURBO_GOURD",
+				"SCOTTS_CONTACT_BAKED_IN_BREAD",
+				"FRAGRANCED_BROWN_MUSHROOM_PASTE",
+				"BUZZYBEES_FANTABULOUS_DISCO_DESTINATION",
 				"BLOOD_SOAKED_COINS",
 				"FRESHLY_MINTED_COINS",
 				"GOLDEN_FRAGMENT",
@@ -2091,12 +2380,14 @@
 				"HANGING_REAPER",
 				"PUMPKIN_CRAFTING_TABLE",
 				"PUMPKIN_ARMCHAIR",
+				"CARROT_BED",
 				"ANNI_PODIUM_MEMORY_THIRD",
 				"ANNI_PODIUM_MEME_RUNNERUP",
 				"SNOWGLOBE",
 				"ROCKING_CHAIR",
 				"MIMIC_CHEST",
 				"HOLIDAY_FIREPLACE",
+				"CARROT_BENCH",
 				"VAMPIRE_BED",
 				"FESTIVE_MAILBOX",
 				"TOTEM",
@@ -2133,12 +2424,14 @@
 				"JUNGLE_DRESSER",
 				"SMALL_POOL",
 				"BUNNY_BENCH",
+				"CARROT_BEDSIDE_TABLE",
 				"JUNGLE_CHAIR",
 				"FLAMINGO",
 				"WISHING_WELL",
 				"BEAR_BOOKSHELF",
 				"COCONUT_DRINK",
 				"BUNNY_ARMCHAIR",
+				"BUNNY_PLUSH",
 				"PATIO_BENCH",
 				"GINGERBREAD_BED",
 				"ROCKING_REINDEER",
@@ -2146,6 +2439,7 @@
 				"JUNGLE_BED",
 				"ANNI_PODIUM_MEMORY_RUNNERUP",
 				"PATIO_SOFA",
+				"CARROT_TABLE",
 				"PUMPKIN_DRESSER",
 				"HOLIDAY_TRAIN",
 				"ANNI_PODIUM_NOTES_SECOND",
@@ -2192,6 +2486,7 @@
 				"WIZARD_TOWER_PORTAL",
 				"HUB_CRYPTS_PORTAL",
 				"MURKWATER_LOCH_PORTAL",
+				"GLOWING_MUSHROOM_CAVE_PORTAL",
 				"TRAPPER_DEN_PORTAL",
 				"SCARLETON_PORTAL",
 				"MUSEUM_PORTAL",
@@ -2207,6 +2502,7 @@
 				"FARMING_2_PORTAL",
 				"FISHING_1_PORTAL",
 				"MINING_1_PORTAL",
+				"LOTUS_ATOLL_PORTAL",
 				"FARMING_1_PORTAL",
 				"HUB_PORTAL",
 				"FORAGING_2_PORTAL",
@@ -2477,6 +2773,7 @@
 				"SKELETON_MASTER_LEGGINGS",
 				"ENCHANTED_BAKED_POTATO",
 				"TANK_WITHER_CHESTPLATE",
+				"CORNUCOPIA_CRYSTAL",
 				"SAVING_GRACE",
 				"IRON_PLATE",
 				"SKELETON_GRUNT_CHESTPLATE",
@@ -2514,7 +2811,6 @@
 				"BAT_PERSON_BOOTS",
 				"UNSTABLE_DRAGON_CHESTPLATE",
 				"PUMPKIN",
-				"HELIX",
 				"MITHRIL_POWDER_TIER_1",
 				"BAT_PERSON_CHESTPLATE",
 				"SALMON_BOOTS",
@@ -2784,6 +3080,7 @@
 				"PET_SKIN_WOLF",
 				"STAR_SWORD_3000",
 				"STAINED_GLASS:12",
+				"LITTLEFOOT_FLUFF",
 				"MUSIC_PANTS",
 				"TANK_MINER_BOOTS",
 				"BLUE_EGG",
@@ -3618,6 +3915,7 @@
 				"POND_ISLAND",
 				"HUNTER_KNIFE",
 				"CARNIVAL_DART_TUBE",
+				"BLIZZARD_BOTTLE",
 				"JUNGLE_WOOD_STAIRS",
 				"CRYPT_BOW",
 				"RAT_JETPACK",
@@ -3645,6 +3943,7 @@
 				"LEATHER_HELMET",
 				"SUPERIOR_FRAGMENT",
 				"SKELETOR_HELMET",
+				"ROBOT_PERSONALITY",
 				"GLACITE_HELMET",
 				"GHAST_BOOTS",
 				"FAIRY_LEGGINGS",
@@ -3767,6 +4066,7 @@
 				"BUILDER_APPLE",
 				"ENCHANTED_SEEDS",
 				"ARMOR_OF_MAGMA_HELMET",
+				"SPEED_RELIC",
 				"ARCHER_DUNGEON_ABILITY_3",
 				"STAINED_CLAY:5",
 				"SALMON_HELMET",
@@ -4031,6 +4331,7 @@
 				"PRICELESS_THE_FISH",
 				"PIGMAN_SWORD",
 				"RELIC_OF_COINS",
+				"GORF_THE_FISH",
 				"ENCHANTED_PUFFERFISH",
 				"DIAMOND_CHESTPLATE",
 				"BUILDER_CHESTO_BERRY",
@@ -4299,6 +4600,7 @@
 				"HYPER_CLEAVER",
 				"LEAVES:3",
 				"ROSETTA_BOOTS",
+				"POCKET_SIZED_IGLOO",
 				"FEATHER_RING",
 				"MITHRIL_TECH",
 				"MINING_ISLAND",
@@ -4455,11 +4757,13 @@
 				"POTION",
 				"DRAGON_EGG",
 				"SADDLE",
+				"MELON_JUICE_MIXIN",
 				"PUMPKIN_GUTS",
 				"MELON_PERSONALITY",
 				"STONE_PLATE",
 				"CELESTE_WAND",
 				"HEAVY_PEARL",
+				"BANANA_MONKEY_PERSONALITY",
 				"LEVER",
 				"ZOMBIE_COMMANDER_HELMET",
 				"REINDEER_PLUSH",
@@ -4925,6 +5229,7 @@
 				"OPAL_CRYSTAL",
 				"PERIDOT_CRYSTAL",
 				"ONYX_CRYSTAL",
+				"HELIX",
 				"UGLY_FOSSIL",
 				"SPINE_FOSSIL",
 				"CLUBBED_FOSSIL",
@@ -4959,6 +5264,7 @@
 				"LUCK_BOOSTER",
 				"SWEEP_BOOSTER",
 				"FORAGING_WISDOM_BOOSTER",
+				"SUPER_SCORCHER",
 				"SUPER_SCRUBBER",
 				"DRAGONTAIL_TRAVEL_SCROLL",
 				"PARK_JUNGLE_TRAVEL_SCROLL",
@@ -4975,6 +5281,7 @@
 				"DANGER_2_TRAVEL_SCROLL",
 				"HUB_CASTLE_TRAVEL_SCROLL",
 				"TRAPPER_DEN_TRAVEL_SCROLL",
+				"GLOWING_MUSHROOM_CAVE_TRAVEL_SCROLL",
 				"DRAGON_NEST_TRAVEL_SCROLL",
 				"PARK_CAVE_TRAVEL_SCROLL",
 				"ARACHNE_SANCTUARY_TRAVEL_SCROLL",
@@ -5081,6 +5388,7 @@
 				"MELON_CHESTPLATE",
 				"MELON_LEGGINGS",
 				"COUNTRY_GREENHOUSE_SKIN",
+				"JELLY_GREENHOUSE_SKIN",
 				"GLACITE_PALACE_GREENHOUSE_SKIN",
 				"ORCHARD_GREENHOUSE_SKIN",
 				"ESTATE_GREENHOUSE_SKIN",
@@ -5098,12 +5406,14 @@
 				"SPRING_BARN_BARN_SKIN",
 				"TOWN_HALL_BARN_SKIN",
 				"PINWHEEL_HOUSE_BARN_SKIN",
+				"THREE_STONE_JERRIES_BARN_SKIN",
 				"GINGERBREAD_VILLAGE_BARN_SKIN",
 				"WINTER_HOMESTEAD_BARN_SKIN",
 				"TAVERN_BARN_SKIN",
 				"JERRY_NEW_YEAR_26",
 				"BEACHSIDE_RESORT_BARN_SKIN",
 				"AUTUMN_HUT_BARN_SKIN",
+				"FAST_FOOD_BARN_SKIN",
 				"PESTHUNTERS_LAIR_BARN_SKIN",
 				"SAND_CASTLE_BARN_SKIN",
 				"CUBE_BARN_SKIN",
@@ -5175,6 +5485,7 @@
 				"MOONSTONE",
 				"MOONFLOWER",
 				"COMPACTED_MOONFLOWER",
+				"COPPER_RING",
 				"DEAD_PLANT",
 				"PLOT_ERASER",
 				"BACHELOR_ROSE",
@@ -5185,6 +5496,8 @@
 				"ROSEWATER_FLASK",
 				"THORNY_VINES",
 				"COMPACTED_WILD_ROSE",
+				"COPPER_ARTIFACT",
+				"COPPER_TALISMAN",
 				"BIOANALYSIS_TALISMAN",
 				"OVERCLOCKER_3000",
 				"BIOANALYSIS_ARTIFACT",
@@ -5258,6 +5571,7 @@
 				"AQUAMASTER_X",
 				"SAM_SCYTHE",
 				"AQUAMASTER_HYDROMAX",
+				"FARMING_TOOLKIT",
 				"SNOW_CLOAK",
 				"SNOW_GLOVES",
 				"SNOW_BELT",
@@ -5595,11 +5909,13 @@
 				"WET_BOOK",
 				"MOONGLADE_JEWEL",
 				"MANGROVE_GEM",
+				"VIBRANT_CORAL",
 				"RETIA_BASICA",
 				"RETIA_MELIORA",
 				"RETIA_FORTA",
 				"RETIA_ROBUSTA",
 				"RETIA_SUPREMA",
+				"MOUND_OF_SEAGRASS",
 				"SHINIEST",
 				"STARLYN_PRIZE",
 				"AGATHA_COUPON",
@@ -6070,6 +6386,7 @@
 				"ink_sac",
 				"raw_cod",
 				"pufferfish",
+				"lotus",
 				"tropical_fish",
 				"raw_salmon",
 				"magmafish",
@@ -6097,5 +6414,6 @@
 		"SubArea": {
 			"type": "string"
 		}
-	}
+	},
+	"additionalProperties": false
 }

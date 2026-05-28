@@ -5,16 +5,17 @@
             "label": "Auto Setup",
             "type": "shell",
             // Mac & Linux
-            "command": "npm install && npm run update-enums",
+            "command": "npm install --prefer-offline && npm run update-enums",
             "windows": {
                 // Windows
-                "command": "npm install; npm run update-enums"
+                "command": "npm install --prefer-offline; npm run update-enums"
             },
             "runOptions": {
                 "runOn": "folderOpen"
             },
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always", 
+                "close": false,
                 "panel": "shared"
             }
         }

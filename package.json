@@ -13,10 +13,10 @@
     "web-streams-polyfill": "^3.3.3"
   },
   "scripts": {
-    "update-editor": "node ./scripts/update-editor.js",
-    "update-enums": "node ./scripts/update-enums.js",
-    "create-guide": "node ./scripts/create-guide.js",
-    "precreate-guide": "npm run update-enums"
+    "update-schema": "node ./tasks/update-schema.js",
+    "update-editor": "node ./tasks/update-editor.js",
+    "update-enums": "node ./tasks/update-enums.js",
+    "create-guide": "node ./tasks/create-guide.js"
   },
   "keywords": [],
   "author": "",
