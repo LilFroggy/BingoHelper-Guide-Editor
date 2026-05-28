@@ -1,3 +1,7 @@
 drafts/**
 references/**
 node_modules
+*.lnk
+*.alias
+*.desktop
+*.vbs
