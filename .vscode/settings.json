@@ -17,6 +17,7 @@
         "tasks": true,
         ".gitignore": true,
         "package-lock.json": true,
-        "package.json": true
+        "package.json": true,
+        "GuideEditor.code-workspace": true
     }
 }
