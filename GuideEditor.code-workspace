@@ -3,5 +3,96 @@
         {
             "path": "." 
         }
-    ]
+    ],
+    "settings": {
+        "editor.formatOnPaste": true,
+        "json.schemas": [
+            {
+                "fileMatch": [
+                    "drafts/**.json"
+                ],
+                "url": "./schemas/guide.schema.json"
+            }
+        ],
+        "files.readonlyInclude": {
+            "references/**.json": true
+        },
+        "files.exclude": {
+            ".git": true,
+            "node_modules": true,
+            "schemas": true,
+            "services": true,
+            "tasks": true,
+            "assets": true,
+            "install": true,
+            "install.bat": true,
+            "Guide Editor.lnk": true,
+            ".gitignore": true,
+            "package-lock.json": true,
+            "package.json": true,
+            "GuideEditor.code-workspace": true
+        },
+        "editor.snippets": {
+            "new step": {
+                "scope": "json",
+                "prefix": "step",
+                "body": [
+                    "{",
+                    "\t\"type\": \"${1|message,cake,sell,buy,has,area,subArea,enchant,reforge,guiItem,guiClickSlot,skill,collection,store,retrieve,experience,upgradeMinion|}\",",
+                    "\t\"instruction\": \"$2\"$0",
+                    "}"
+                ],
+                "description": "Create a new step object"
+            },
+            "new guide": {
+                "scope": "json",
+                "prefix": "guide",
+                "body": [
+                    "{",
+                    "\t\"name\": \"$1\",",
+                    "\t\"version\": ${2:1},",
+                    "\t\"data\": {",
+                    "\t\t\"stepIndex\": ${3:0},",
+                    "\t\t\"steps\": [",
+                    "\t\t\t$0",
+                    "\t\t]",
+                    "\t}",
+                    "}"
+                ],
+                "description": "Create a new guide object"
+            },
+            "new waypoint": {
+                "prefix": "waypoint",
+                "body": [
+                    "\"waypoint\": {",
+                    "\t\"type\": \"list\",",
+                    "\t\"beam\": true,",
+                    "\t\"list\": [",
+                    "\t\t",
+                    "\t],",
+                    "\t\"index\": 0",
+                    "}"
+                ],
+                "description": "Creates a new waypoint property"
+            }
+        }
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Auto Setup",
+                "type": "shell",
+                "command": "npm run update-schema",
+                "runOptions": {
+                    "runOn": "folderOpen"
+                },
+                "presentation": {
+                    "reveal": "always",
+                    "close": false,
+                    "panel": "shared"
+                }
+            }
+        ]
+    }
 }
