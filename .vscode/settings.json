@@ -1,0 +1,11 @@
+{
+    "editor.formatOnPaste": true,
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "drafts/**.json"
+            ],
+            "url": "./schemas/guide.schema.json"
+        }
+    ]
+}

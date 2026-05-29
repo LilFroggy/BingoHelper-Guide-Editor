@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Auto Setup",
+            "type": "shell",
+            "command": "npm run update-schema",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "reveal": "always",
+                "close": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}
