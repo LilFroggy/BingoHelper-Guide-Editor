@@ -1,12 +1,19 @@
 @echo off
-echo Creating shortcut...
+
+pushd "%~dp0"
+
+echo creating shortcut...
 call install\create_shortcut.bat
 
-echo.
-echo Checking for required tools (Node.js/Git)...
-echo.
+echo checking dependencies...
 call install\check_dependencies.bat
 
+echo initializing Node.js environment...
+call npm install --prefer-offline >nul 2>nul
+
 echo.
-echo Setup complete!
+echo setup complete.
+
+popd
+
 pause
