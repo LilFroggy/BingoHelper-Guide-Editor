@@ -9,7 +9,7 @@ echo checking dependencies...
 call install\check_dependencies.bat
 
 echo initializing Node.js environment...
-call npm ci
+call npm ci 2>nul >nul
 
 echo.
 echo setup complete.
