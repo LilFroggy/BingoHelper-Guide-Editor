@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
 import { shouldExecuteTask, GREEN, RED, RESET, YELLOW } from './util.js';
 
 const REPO_URL = "https://github.com/LilFroggy/BingoHelper-Guide-Editor.git";
@@ -16,10 +16,9 @@ export const updateEditor = () => {
 
     try {
         ensureRemote('upstream', REPO_URL);
-
         execSync('git fetch upstream main');
-
-        execSync('git reset --hard origin/main');
+        execSync('git reset --hard upstream/main');
+        execSync('npm ci');
 
         console.log(`${GREEN}Update successful! Core files have been refreshed.${RESET}`);
 
